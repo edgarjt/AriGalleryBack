@@ -50,3 +50,6 @@ $router->get('/ultimasnoticias', 'NoticesController@ultimateNotices');
 
 //Tutes Events
 $router->get('ultimoseventos', 'EventosController@ultimateEvents');
+
+//firmas
+$router->get('/firmas', 'Firmascontroller@allFirmas');
