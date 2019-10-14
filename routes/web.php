@@ -53,3 +53,6 @@ $router->get('ultimoseventos', 'EventosController@ultimateEvents');
 
 //firmas
 $router->get('/firmas', 'Firmascontroller@allFirmas');
+
+//Autores
+$router->get('/autores', 'AutoresController@allAutores');

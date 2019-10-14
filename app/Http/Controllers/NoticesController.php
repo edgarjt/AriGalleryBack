@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Notices;
-use App\Obras;
 use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
