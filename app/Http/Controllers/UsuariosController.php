@@ -50,16 +50,16 @@ class UsuariosController extends BaseController
                 if ($user && Hash::check($data['usu_pass'], $user->usu_pass)){
                     return response()->json($user, 200);
                 }else{
-                    return response()->json(['response' => false], 401);
+                    return json_encode(['response' => false], 401);
                 }
 
                 //return $user;
 
             }catch (ModelNotFoundException $e){
-                return response()->json(['response' => false], 401);
+                return json_encode(['response' => false], 401);
             }
         }else{
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 401);
         }
     }
     function update(Request $request){
@@ -73,7 +73,7 @@ class UsuariosController extends BaseController
                 return response()->json(['response' => true], 200);
 
             }catch (ModelNotFoundException $e){
-                return response()->json(['response' => false], 401);
+               return json_encode(['response' => false], 401);
             }
         }
 
