@@ -37,7 +37,7 @@ class UsuariosController extends BaseController
             ]);
             return response()->json($create, 200);
         }else{
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 401);
         }
 
     }

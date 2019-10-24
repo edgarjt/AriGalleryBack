@@ -52,7 +52,7 @@ $router->get('/ultimasnoticias', 'NoticesController@ultimateNotices');
 $router->get('ultimoseventos', 'EventosController@ultimateEvents');
 
 //firmas
-$router->get('/firmas', 'Firmascontroller@allFirmas');
+$router->get('/firmas', 'FirmasController@allFirmas');
 
 //Autores
 $router->get('/autores', 'AutoresController@allAutores');
