@@ -28,11 +28,11 @@ $router->post('/login', [
 ]);
 
 $router->post('/delete', [
-    'uses' => 'UsersController@delete'
+    'uses' => 'UsuariosController@delete'
 ]);
 
 $router->post('/update',[
-    'uses' => 'UsersController@update'
+    'uses' => 'UsuariosController@update'
 ]);
 
 //Rutes Obras

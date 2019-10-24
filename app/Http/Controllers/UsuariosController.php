@@ -64,18 +64,32 @@ class UsuariosController extends BaseController
     }
     function update(Request $request){
 
-        if ($request->isJson()){
-            try{
-                $data = $request->json()->all();
-                $user_update = Usuarios::where('id', $data['_id'])->first();
+        if ($request->isJson()) {
+            $data = $request->json()->all();
+            $user_update = Usuarios::where('id', $data['id'])->first();
+            if (empty($user_update)) {
+                return json_encode(['response' => false], 401);
+            } else {
                 $user_update->update($data);
-
                 return response()->json(['response' => true], 200);
-
-            }catch (ModelNotFoundException $e){
-               return json_encode(['response' => false], 401);
             }
+        }else{
+            return json_encode(['response' => false], 401);
         }
+    }
 
+    function delete(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $user_delete = Usuarios::where('id', $data['id'])->first();
+            if (empty($user_delete)){
+                return json_encode(['response' => false], 401);
+            }else{
+                $user_delete->delete();
+                return response()->json(['response' => true], 200);
+            }
+        }else{
+            return json_encode(['response' => false], 401);
+        }
     }
 }
