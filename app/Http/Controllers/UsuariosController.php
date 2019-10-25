@@ -92,4 +92,19 @@ class UsuariosController extends BaseController
             return json_encode(['response' => false], 401);
         }
     }
+
+    function userwhere(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $user = Usuarios::where('id', $data['id'])->first();
+
+            if(empty($user)){
+                return json_encode(['response' => false], 401);
+            }else{
+                return response()->json($user, 200);
+            }
+        }else{
+            return json_encode(['response' => 'No autorizado'], 401);
+        }
+    }
 }
