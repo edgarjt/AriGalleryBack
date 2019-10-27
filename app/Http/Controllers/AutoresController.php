@@ -22,7 +22,7 @@ class AutoresController extends BaseController
     function allAutoresAdd(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
-            $create = Autores::create([
+            Autores::create([
                     'aut_clave' => $data['aut_clave'],
                     "aut_nombre" => $data['aut_nombre'],
                      "aut_apellidos" => $data['aut_apellidos']

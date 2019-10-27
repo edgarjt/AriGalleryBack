@@ -56,6 +56,9 @@ $router->post('/noticiaDelete', 'NoticesController@DeleteNotices');
 
 //Tutes Events
 $router->get('/ultimoseventos', 'EventosController@ultimateEvents');
+$router->post('/addEventos', 'EventosController@addEvents');
+$router->post('/updateEventos', 'EventosController@updateEvents');
+$router->post('/deleteEventos', 'EventosController@deleteEvents');
 
 //firmas
 $router->get('/firmas', 'FirmasController@allFirmas');
