@@ -50,9 +50,12 @@ $router->post('/esculturasclave', 'EsculturasController@keyEsculturas');
 
 //rutes Notices
 $router->get('/ultimasnoticias', 'NoticesController@ultimateNotices');
+$router->post('/noticiaAdd', 'NoticesController@addNotices');
+$router->post('/noticiaUpdate', 'NoticesController@updateNotices');
+$router->post('/noticiaDelete', 'NoticesController@DeleteNotices');
 
 //Tutes Events
-$router->get('ultimoseventos', 'EventosController@ultimateEvents');
+$router->get('/ultimoseventos', 'EventosController@ultimateEvents');
 
 //firmas
 $router->get('/firmas', 'FirmasController@allFirmas');
