@@ -76,4 +76,20 @@ class ObrasController extends BaseController
         }
     }
 
+    function deleteWorks(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $obra_delete = Obras::where('id', $data['id'])->first();
+
+            if (empty($obra_delete)){
+                return response()->json(['response' => false], 404);
+            }
+            $obra_delete->delete();
+            return response()->json(['response' => true], 404);
+
+
+
+        }
+    }
+
 }
