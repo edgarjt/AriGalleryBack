@@ -43,6 +43,9 @@ $router->post('/userswhere',[
 $router->get('/obras', 'ObrasController@allObras');
 $router->post('/obras', 'ObrasController@addWorks');
 $router->post('/obrasUpdate', 'ObrasController@updateWorks');
+$router->get('/obrasQR', 'ObrasController@QrWorks');
+$router->post('/obrasDelete', 'ObrasController@deleteWorks');
+$router->post('/obrasWhere', 'ObrasController@whereWorks');
 
 //Rutes Esculptures
 $router->get('/esculturas', 'EsculturasController@allEsculturas');
