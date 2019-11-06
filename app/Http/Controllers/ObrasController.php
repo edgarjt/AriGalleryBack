@@ -23,7 +23,7 @@ class ObrasController extends BaseController
             $obras = DB::select('SELECT * FROM obras INNER JOIN autores ON obras.obr_clave_autor = autores.id');
             return response()->json($obras, 200);
         }else{
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 500);
         }
 
     }
