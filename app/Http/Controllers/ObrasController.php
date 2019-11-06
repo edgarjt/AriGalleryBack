@@ -9,6 +9,7 @@ use Faker\Provider\File;
 use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use PHPQRCode\QRcode;
@@ -18,12 +19,12 @@ class ObrasController extends BaseController
 {
     function allObras(Request $request){
         if ($request->isJson()){
-            $obras = Obras::all();
+            //$obras = Obras::all();
+            $obras = DB::select('SELECT * FROM obras INNER JOIN autores ON obras.obr_clave_autor = autores.id');
             return response()->json($obras, 200);
         }else{
             return response()->json(['response' => false], 401);
         }
-
 
     }
 
@@ -69,7 +70,7 @@ class ObrasController extends BaseController
 
     function updateWorks(Request $request){
 
-        if ($request->isJson()){
+/*        if ($request->isJson()){
             try{
                 $data = $request->json()->all();
                 $obraUpdate = Obras::where('id', $data['id'])->first();
@@ -82,7 +83,8 @@ class ObrasController extends BaseController
 
         }else{
             return response()->json(['response' => false], 401);
-        }
+        }*/
+return $request;
     }
 
     function deleteWorks(Request $request){
@@ -102,19 +104,6 @@ class ObrasController extends BaseController
         }
     }
 
-    function QrWorks(){
-        $nombre_img = 'Morro';
-        $nombre = 'edgar';
-        $apellido = 'Salomon';
-
-        $code_content = 'FN:' . $nombre . "\n";
-        $code_content .= $apellido . "\n";
-
-        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
-        QRcode::png($code_content, $ruta, 'Q', 10, 1);
-
-
-    }
     function whereWorks(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
