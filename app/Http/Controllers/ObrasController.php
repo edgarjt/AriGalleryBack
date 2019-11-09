@@ -19,13 +19,38 @@ class ObrasController extends BaseController
 {
     function allObras(Request $request){
         if ($request->isJson()){
-            //$obras = Obras::all();
-            $obras = DB::select('SELECT * FROM obras INNER JOIN autores ON obras.obr_clave_autor = autores.id');
+            $obras = DB::table('obras')
+                ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
+                ->select('obras.*', 'autores.aut_nombre', 'autores.aut_apellidos')
+                ->get();
             return response()->json($obras, 200);
         }else{
             return json_encode(['response' => false], 500);
         }
 
+    }
+
+    function AutorObras(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $id = $data['id'];
+
+            $obras_autor = DB::table('autores')
+                ->join('obras', 'autores.id', '=', 'obras.obr_clave_autor')
+                ->select('autores.*', 'obras.obr_nombre', 'obras.obr_descripcion', 'obras.obr_foto')
+                ->where('autores.id', '=', $id)
+                ->get();
+
+            return $obras_autor;
+        }else{
+            return json_encode(['response' => false], 500);
+        }
+
+
+
+
+
+        //return response()->json($id, 200);
     }
 
     function addWorks(Request $request){
@@ -49,7 +74,7 @@ class ObrasController extends BaseController
 
         $create = Obras::create([
             'obr_clave' => $data['obr_clave'],
-            'obr_clave_autor' => 1,
+            'obr_clave_autor' => $data['obr_clave_autor'],
             'obr_nombre' => $data['obr_nombre'],
             'obr_descripcion' => $data['obr_descripcion'],
             'obr_precio' => $data['obr_precio'],
@@ -70,21 +95,27 @@ class ObrasController extends BaseController
 
     function updateWorks(Request $request){
 
-/*        if ($request->isJson()){
-            try{
-                $data = $request->json()->all();
-                $obraUpdate = Obras::where('id', $data['id'])->first();
-                $obraUpdate->update($data);
+        if ($request->isJson()){
+            $data = $request->json()->all();
 
-                return response()->json(['response' => true], 200);
-            }catch (ModelNotFoundException $e){
-                return response()->json(['response' => false, 401]);
+            $id = $data['id'];
+            $nombre = $data['obr_nombre'];
+            $precio = $data['obr_precio'];
+            $estado = $data['obr_estado'];
+
+            $query = DB::table('obras')
+                ->where('id', $id)
+                ->update(['obr_nombre' => $nombre, 'obr_precio' => $precio, 'obr_estado' => $estado]);
+            if ($query == 0){
+                return response()->json(['response' => false], 500);
             }
+
+            return response()->json(['response' => true], 200);
 
         }else{
             return response()->json(['response' => false], 401);
-        }*/
-return $request;
+        }
+
     }
 
     function deleteWorks(Request $request){

@@ -46,6 +46,7 @@ $router->post('/obrasUpdate', 'ObrasController@updateWorks');
 $router->get('/obrasQR', 'ObrasController@QrWorks');
 $router->post('/obrasDelete', 'ObrasController@deleteWorks');
 $router->post('/obrasWhere', 'ObrasController@whereWorks');
+$router->post('/obrasAutor', 'ObrasController@AutorObras');
 
 //Rutes Esculptures
 $router->get('/esculturas', 'EsculturasController@allEsculturas');
@@ -57,7 +58,7 @@ $router->post('/noticiaAdd', 'NoticesController@addNotices');
 $router->post('/noticiaUpdate', 'NoticesController@updateNotices');
 $router->post('/noticiaDelete', 'NoticesController@DeleteNotices');
 
-//Tutes Events
+//rutes Events
 $router->get('/ultimoseventos', 'EventosController@ultimateEvents');
 $router->post('/addEventos', 'EventosController@addEvents');
 $router->post('/updateEventos', 'EventosController@updateEvents');
