@@ -15,7 +15,9 @@ class NoticesController extends BaseController
         if ($request->isJson()){
             try{
                 //$data = new Notices();
-                $data = Notices::orderBy('id', 'desc')->get();
+                $data = Notices::orderBy('id', 'desc')
+                    ->limit(10)
+                    ->get();
 
                 return response()->json($data, 200);
 

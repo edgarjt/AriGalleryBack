@@ -30,6 +30,20 @@ class ObrasController extends BaseController
 
     }
 
+/*    function LimitObras(Request $request){
+        if ($request->isJson()){
+            $obras = DB::table('obras')
+                ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
+                ->select('obras.*', 'autores.aut_nombre', 'autores.aut_apellidos')
+                ->orderBy('id', 'desc')
+                ->limit(8)
+                ->get();
+            return response()->json($obras, 200);
+        }else{
+            return json_encode(['response' => false], 500);
+        }
+    }*/
+
     function AutorObras(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
@@ -37,11 +51,12 @@ class ObrasController extends BaseController
 
             $obras_autor = DB::table('autores')
                 ->join('obras', 'autores.id', '=', 'obras.obr_clave_autor')
-                ->select('autores.*', 'obras.obr_nombre', 'obras.obr_descripcion', 'obras.obr_foto')
+                ->select('autores.aut_nombre','autores.aut_apellidos', 'obras.*')
                 ->where('autores.id', '=', $id)
                 ->get();
 
-            return $obras_autor;
+                return response()->json($obras_autor, 200);
+
         }else{
             return json_encode(['response' => false], 500);
         }
@@ -62,7 +77,6 @@ class ObrasController extends BaseController
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('avatars', $name);
 
         }
-
 
         $data = $request->all();
 
@@ -149,5 +163,13 @@ class ObrasController extends BaseController
             return json_encode(['response' => 'No autorizado'], 401);
         }
     }
+/*    function searchObras(Request $request){
+        $obras = DB::table('obras')
+            ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
+            ->select('obras.*', 'autores.aut_nombre', 'autores.aut_apellidos')
+            ->orWhere('obr_nombre', 'like', '%fuego%')
+            ->get();
+        return response()->json($obras);
+    }*/
 
 }
