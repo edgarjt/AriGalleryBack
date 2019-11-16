@@ -52,7 +52,10 @@ $router->post('/search', 'ObrasController@searchObras');
 
 //Rutes Esculptures
 $router->get('/esculturas', 'EsculturasController@allEsculturas');
+$router->post('/addesculturas', 'EsculturasController@addEsculturas');
 $router->post('/esculturasclave', 'EsculturasController@keyEsculturas');
+$router->post('/esculturasupdate', 'EsculturasController@updateEsculturas');
+$router->post('/esculturasdelete', 'EsculturasController@deleteEsculturas');
 
 //rutes Notices
 $router->get('/ultimasnoticias', 'NoticesController@ultimateNotices');
