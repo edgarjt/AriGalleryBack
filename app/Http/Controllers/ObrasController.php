@@ -109,26 +109,46 @@ class ObrasController extends BaseController
 
     function updateWorks(Request $request){
 
-        if ($request->isJson()){
-            $data = $request->json()->all();
+        if ($request->hasFile('archivo')){
 
-            $id = $data['id'];
-            $nombre = $data['obr_nombre'];
-            $precio = $data['obr_precio'];
-            $estado = $data['obr_estado'];
-
-            $query = DB::table('obras')
-                ->where('id', $id)
-                ->update(['obr_nombre' => $nombre, 'obr_precio' => $precio, 'obr_estado' => $estado]);
-            if ($query == 0){
-                return response()->json(['response' => false], 500);
-            }
-
-            return response()->json(['response' => true], 200);
+            $archivo = $request->file('archivo');
+            $name = time().$archivo->getClientOriginalName();
+            $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('avatars', $name);
 
         }else{
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 401);
         }
+
+        $data = $request->all();
+
+        $id = $data['id'];
+
+        $nombre_img = $data['obr_clave'];
+        //$descripcion = $data['obr_descripcion'];
+        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
+        QRcode::png($nombre_img, $ruta, 'Q', '10', '1');
+        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/obrasQR/' . $nombre_img .'.png';
+
+        DB::table('obras')
+            ->where('id', $id)
+            ->update([
+                'obr_clave' => $data['obr_clave'],
+                'obr_clave_autor' => $data['obr_clave_autor'],
+                'obr_nombre' => $data['obr_nombre'],
+                'obr_descripcion' => $data['obr_descripcion'],
+                'obr_precio' => $data['obr_precio'],
+                'obr_qr' => $QR_Rute,
+                'obr_anio' => $data['obr_anio'],
+                'obr_ancho' => $data['obr_ancho'],
+                'obr_alto' => $data['obr_alto'],
+                'obr_tecnica' => $data['obr_tecnica'],
+                'obr_estado' => $data['obr_estado'],
+                //'esc_clave_remodelacion' => $data['esc_clave_remodelacion'],
+                'obr_foto' => $save_url
+            ]);
+
+        return response()->json(['response' => true], 200);
+        // return response()->json($data);
 
     }
 
