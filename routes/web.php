@@ -77,3 +77,9 @@ $router->get('/autores', 'AutoresController@allAutores');
 $router->post('/addautores', 'AutoresController@allAutoresAdd');
 $router->post('/artistUpdate', 'AutoresController@AutoresUpdate');
 $router->post('/artistDelete', 'AutoresController@AutoresDelete');
+
+//Comments
+$router->get('/comments', 'CommentsController@comments');
+
+//Productos
+$router->get('/products', 'ProductsController@ProductsAll');
