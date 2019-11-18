@@ -29,7 +29,7 @@ class AutoresController extends BaseController
 
             $archivo = $request->file('archivo');
             $name = time().$archivo->getClientOriginalName();
-            $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('autoresAvatar+', $name);
+            $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('autoresAvatar', $name);
 
         }
         $data = $request->all();
