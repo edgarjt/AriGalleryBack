@@ -34,6 +34,7 @@ class ProductsController extends Controller
         Products::create([
             'pro_titulo' => $data['pro_titulo'],
             'pro_descripcion' => $data['pro_descripcion'],
+            'pro_precio' => $data['pro_precio'],
             'pro_foto' => $save_url
         ]);
         return response()->json(['response' => true], 200);
