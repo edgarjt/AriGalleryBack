@@ -183,13 +183,5 @@ class ObrasController extends BaseController
             return json_encode(['response' => 'No autorizado'], 401);
         }
     }
-/*    function searchObras(Request $request){
-        $obras = DB::table('obras')
-            ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
-            ->select('obras.*', 'autores.aut_nombre', 'autores.aut_apellidos')
-            ->orWhere('obr_nombre', 'like', '%fuego%')
-            ->get();
-        return response()->json($obras);
-    }*/
 
 }

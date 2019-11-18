@@ -84,4 +84,5 @@ $router->get('/comments', 'CommentsController@comments');
 //Productos
 $router->get('/products', 'ProductsController@ProductsAll');
 $router->post('/AddProducts', 'ProductsController@ProductsAdd');
+$router->post('/UpdateProducts', 'ProductsController@ProductsUpdate');
 $router->post('/DeleteProducts', 'ProductsController@ProductsDelete');

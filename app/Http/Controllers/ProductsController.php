@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
@@ -34,10 +35,39 @@ class ProductsController extends Controller
         Products::create([
             'pro_titulo' => $data['pro_titulo'],
             'pro_descripcion' => $data['pro_descripcion'],
-            'pro_precio' => $data['pro_precio'],
-            'pro_foto' => $save_url
+            'pro_foto' => $save_url,
+            'pro_precio' => $data['pro_precio']
+
         ]);
         return response()->json(['response' => true], 200);
+    }
+
+    function ProductsUpdate(Request $request){
+        if ($request->hasFile('archivo')){
+
+            $archivo = $request->file('archivo');
+            $name = time().$archivo->getClientOriginalName();
+            $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('Productod', $name);
+
+        }else{
+            return json_encode(['response' => false], 401);
+        }
+
+        $data = $request->all();
+
+        $id = $data['id'];
+
+        DB::table('productos')
+            ->where('id', $id)
+            ->update([
+                'pro_titulo' => $data['pro_titulo'],
+                'pro_descripcion' => $data['pro_descripcion'],
+                'pro_foto' => $save_url,
+                'pro_precio' => $data['pro_precio']
+            ]);
+
+        return response()->json(['response' => true], 200);
+
     }
 
     function productsDelete(Request $request)

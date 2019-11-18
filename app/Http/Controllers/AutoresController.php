@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Autores;
+use http\Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -62,14 +64,19 @@ class AutoresController extends BaseController
     function AutoresDelete(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
-            $artis_delete = Autores::where('id', $data['id'])->first();
 
-            if (empty($artis_delete)){
-                return response()->json(['response' => false], 401);
-            }else{
-                $artis_delete->delete();
-                return response()->json(['response' => true], 200);
+            $id = $data['id'];
+
+            try{
+                $query = DB::table('autores')->where('id', '=', $id)->delete();
+
+            }catch (\Exception $e){
+                report($e);
+
+                return response()->json(['exception' => true]);
+
             }
+
         }else{
             return json_encode(['response' => false], 401);
         }
