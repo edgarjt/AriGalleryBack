@@ -56,6 +56,7 @@ $router->post('/addesculturas', 'EsculturasController@addEsculturas');
 $router->post('/esculturasclave', 'EsculturasController@keyEsculturas');
 $router->post('/esculturasupdate', 'EsculturasController@updateEsculturas');
 $router->post('/esculturasdelete', 'EsculturasController@deleteEsculturas');
+$router->post('/esculturasAutor', 'EsculturasController@AutorEsculturas');
 
 //rutes Notices
 $router->get('/ultimasnoticias', 'NoticesController@ultimateNotices');

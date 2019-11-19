@@ -24,6 +24,25 @@ class EsculturasController extends BaseController
         }
     }
 
+    function AutorEsculturas(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $id = $data['id'];
+
+            $obras_autor = DB::table('autores')
+                ->join('esculturas', 'autores.id', '=', 'esculturas.esc_clave_autor')
+                ->select('autores.aut_nombre','autores.aut_apellidos', 'esculturas.*')
+                ->where('autores.id', '=', $id)
+                ->get();
+
+            return response()->json($obras_autor, 200);
+
+        }else{
+            return json_encode(['response' => false], 500);
+        }
+
+    }
+
     function addEsculturas(Request $request){
         if ($request->hasFile('archivo')){
 
