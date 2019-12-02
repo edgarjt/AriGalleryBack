@@ -81,9 +81,17 @@ $router->post('/artistDelete', 'AutoresController@AutoresDelete');
 
 //Comments
 $router->get('/comments', 'CommentsController@comments');
+$router->post('/AddComments', 'CommentsController@commentsAdd');
+$router->post('/DeleteComments', 'CommentsController@commentsDelete');
 
 //Productos
 $router->get('/products', 'ProductsController@ProductsAll');
 $router->post('/AddProducts', 'ProductsController@ProductsAdd');
 $router->post('/UpdateProducts', 'ProductsController@ProductsUpdate');
 $router->post('/DeleteProducts', 'ProductsController@ProductsDelete');
+
+//Galeria Virtuaal
+$router->get('/galeriav', 'GalleryController@GaleriavAll');
+$router->post('/AddGallery', 'GalleryController@GalleryAdd');
+$router->post('/UpdateGallery', 'GalleryController@GalleryUpdate');
+$router->post('/DeleteGallery', 'GalleryController@GalleryDelete');

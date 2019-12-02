@@ -70,7 +70,15 @@ class UsuariosController extends BaseController
             if (empty($user_update)) {
                 return json_encode(['response' => false], 401);
             } else {
-                $user_update->update($data);
+                $user_update->update([
+			        'usu_clave' => $data['usu_clave'],
+                    'usu_telefono' => $data['usu_telefono'],
+                    'usu_email' => $data['usu_email'],
+                    'usu_pass' => Hash::make($data['usu_pass']),
+                    'usu_nombre' => $data['usu_nombre'],
+                    'usu_appaterno' => $data['usu_appaterno'],
+                    'usu_apmaterno' => $data['usu_apmaterno'],
+                ]);
                 return response()->json(['response' => true], 200);
             }
         }else{

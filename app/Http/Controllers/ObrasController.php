@@ -61,10 +61,6 @@ class ObrasController extends BaseController
             return json_encode(['response' => false], 500);
         }
 
-
-
-
-
         //return response()->json($id, 200);
     }
 
@@ -172,13 +168,24 @@ class ObrasController extends BaseController
     function whereWorks(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
-            $user = Obras::where('obr_clave', $data['obr_clave'])->first();
+/*            $user = Obras::where('obr_clave', $data['obr_clave'])->first();
 
             if(empty($user)){
                 return json_encode(['response' => false], 401);
             }else{
                 return response()->json($user, 200);
-            }
+            }*/
+            $clave_autor = $data['obr_clave'];
+
+            $obras_autor = DB::table('obras')
+                ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
+                ->select('autores.aut_nombre','autores.aut_apellidos', 'obras.*')
+                ->where('obras.obr_clave', '=', $clave_autor)
+                ->get();
+
+            return response()->json($obras_autor, 200);
+
+
         }else{
             return json_encode(['response' => 'No autorizado'], 401);
         }

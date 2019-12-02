@@ -40,7 +40,8 @@ class AutoresController extends BaseController
             'aut_clave' => $data['aut_clave'],
             'aut_nombre' => $data['aut_nombre'],
             'aut_apellidos' => $data['aut_apellidos'],
-            'aut_foto' => $save_url
+            'aut_foto' => $save_url,
+            'aut_templanza' => $data['aut_templanza'],
         ]);
         return response()->json(['response' => true], 200);
 

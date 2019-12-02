@@ -132,13 +132,22 @@ class EsculturasController extends BaseController
         if ($request->isJson()){
             try{
                 $data = $request->json()->all();
-                $getEsculturas = Esculturas::where('esc_clave', $data['esc_clave'])->first();
+/*                $getEsculturas = Esculturas::where('esc_clave', $data['esc_clave'])->first();
 
                 if ($getEsculturas){
                     return response()->json($getEsculturas, 200);
                 }else{
                     return response()->json(['response' => false], 401);
-                }
+                }*/
+                $clave_autor = $data['esc_clave'];
+
+                $esculturas_autor = DB::table('esculturas')
+                    ->join('autores', 'esculturas.esc_clave_autor', '=', 'autores.id')
+                    ->select('autores.aut_nombre','autores.aut_apellidos', 'esculturas.*')
+                    ->where('esculturas.esc_clave', '=', $clave_autor)
+                    ->get();
+
+                return response()->json($esculturas_autor, 200);
 
             }catch (ModelNotFoundException $e){
                 return response()->json(['response' => false], 401);
