@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Resset;
 use App\Usuarios;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class UsuariosController extends BaseController
@@ -113,6 +116,35 @@ class UsuariosController extends BaseController
             }
         }else{
             return json_encode(['response' => 'No autorizado'], 401);
+        }
+    }
+
+    function ressetPass(Request $request){
+        if ($request->isJson()){
+            $data = $request->json()->all();
+            $email = $data['usu_email'];
+            $user = Usuarios::where('usu_email', $email)->first();
+            //$user = DB::table('usuarios')->where('usu_email', $email)->first();
+
+            if (empty($user)){
+                return response()->json(['message' => 'El correo no se encuentra registrado']);
+            }else{
+                $code = Str::random(10);
+                $create = Resset::create([
+                    'email' => $email,
+                    'code' => $code,
+                ]);
+            //Enviar email al usuario
+                $to = $email;
+                $subject = "Soporte arigaleriadearte.com";
+                $message = "Code: " . $code;
+
+                mail($to, $subject, $message);
+                return response()->json(['response' => true], 200);
+
+            }
+        }else{
+            return response()->json(['response' => false], 401);
         }
     }
 }

@@ -37,6 +37,9 @@ $router->post('/update',[
 $router->post('/userswhere',[
     'uses' => 'UsuariosController@userwhere'
 ]);
+$router->post('/ressetPass',[
+    'uses' => 'UsuariosController@ressetPass'
+]);
 
 //Rutes Obras
 
@@ -95,3 +98,6 @@ $router->get('/galeriav', 'GalleryController@GaleriavAll');
 $router->post('/AddGallery', 'GalleryController@GalleryAdd');
 $router->post('/UpdateGallery', 'GalleryController@GalleryUpdate');
 $router->post('/DeleteGallery', 'GalleryController@GalleryDelete');
+
+//Resset
+$router->post('/verificate', 'RessetController@restar');
