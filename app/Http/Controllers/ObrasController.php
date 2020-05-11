@@ -13,20 +13,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use PHPQRCode\QRcode;
+use Mpdf\Mpdf;
 
 
 class ObrasController extends BaseController
 {
     function allObras(Request $request){
-        if ($request->isJson()){
+                if ($request->isJson()){
             $obras = DB::table('obras')
                 ->join('autores', 'obras.obr_clave_autor', '=', 'autores.id')
                 ->select('obras.*', 'autores.aut_nombre', 'autores.aut_apellidos')
                 ->get();
             return response()->json($obras, 200);
-        }else{
-            return json_encode(['response' => false], 500);
+                }else{
+            return json_encode(['response' => false], 401);
         }
+
+
 
     }
 
@@ -189,6 +192,11 @@ class ObrasController extends BaseController
         }else{
             return json_encode(['response' => 'No autorizado'], 401);
         }
+    }
+
+    function obrasReport(){
+        return view('pdf.index');
+
     }
 
 }

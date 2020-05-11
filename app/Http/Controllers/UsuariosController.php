@@ -18,7 +18,7 @@ class UsuariosController extends BaseController
             $obras = Usuarios::all();
             return response()->json($obras, 200);
         }else{
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 402);
         }
 
 
@@ -81,6 +81,7 @@ class UsuariosController extends BaseController
                     'usu_nombre' => $data['usu_nombre'],
                     'usu_appaterno' => $data['usu_appaterno'],
                     'usu_apmaterno' => $data['usu_apmaterno'],
+                    'usu_tipo' => $data['usu_tipo']
                 ]);
                 return response()->json(['response' => true], 200);
             }
@@ -127,7 +128,7 @@ class UsuariosController extends BaseController
             //$user = DB::table('usuarios')->where('usu_email', $email)->first();
 
             if (empty($user)){
-                return response()->json(['message' => 'El correo no se encuentra registrado']);
+                return response()->json(['mensaje' => 'El correo no se encuentra registrado'], 401);
             }else{
                 $code = Str::random(10);
                 $create = Resset::create([

@@ -15,31 +15,13 @@ $router->get('/', function () use ($router) {
     //return $router->app->version();
     return "AryGallery";
 });
-$router->get('/users', [
-    'uses' => 'UsuariosController@getUsers'
-]);
-
-$router->post('/addUsers', [
-    'uses' => 'UsuariosController@addUsers'
-]);
-
-$router->post('/login', [
-   'uses' => 'UsuariosController@login'
-]);
-
-$router->post('/delete', [
-    'uses' => 'UsuariosController@delete'
-]);
-
-$router->post('/update',[
-    'uses' => 'UsuariosController@update'
-]);
-$router->post('/userswhere',[
-    'uses' => 'UsuariosController@userwhere'
-]);
-$router->post('/ressetPass',[
-    'uses' => 'UsuariosController@ressetPass'
-]);
+$router->get('/users', ['uses' => 'UsuariosController@getUsers']);
+$router->post('/addUsers', ['uses' => 'UsuariosController@addUsers']);
+$router->post('/login', ['uses' => 'UsuariosController@login']);
+$router->post('/delete', ['uses' => 'UsuariosController@delete']);
+$router->post('/update',['uses' => 'UsuariosController@update']);
+$router->post('/userswhere',['uses' => 'UsuariosController@userwhere']);
+$router->post('/ressetPass',['uses' => 'UsuariosController@ressetPass']);
 
 //Rutes Obras
 
@@ -75,6 +57,9 @@ $router->post('/deleteEventos', 'EventosController@deleteEvents');
 
 //firmas
 $router->get('/firmas', 'FirmasController@allFirmas');
+$router->post('/addFirmas', 'FirmasController@firmasAdd');
+$router->post('/updateFirmas', 'FirmasController@firmasUpdate');
+$router->post('/deleteFirmas', 'FirmasController@firmasDelete');
 
 //Autores
 $router->get('/autores', 'AutoresController@allAutores');

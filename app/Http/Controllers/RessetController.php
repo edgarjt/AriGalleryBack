@@ -14,7 +14,7 @@ class RessetController extends Controller
             $data = $request['code'];
             $code = Resset::where('code', $data)->first();
             if (empty($code)){
-                return response()->json(['message' => 'El código es incorrecto'], 401);
+                return response()->json(['mensaje' => 'El código es incorrecto'], 401);
             }else{
                 $user_email = $code['email'];
 
