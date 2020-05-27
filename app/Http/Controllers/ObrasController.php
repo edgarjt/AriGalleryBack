@@ -68,6 +68,7 @@ class ObrasController extends BaseController
     }
 
     function addWorks(Request $request){
+        $data = $request->all();
 
         if ($request->hasFile('archivo')){
 
@@ -75,9 +76,11 @@ class ObrasController extends BaseController
             $name = time().$archivo->getClientOriginalName();
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('avatars', $name);
 
+        }else {
+            $save_url = $data['obr_foto'];
         }
 
-        $data = $request->all();
+        
 
         $nombre_img = $data['obr_clave'];
         //$descripcion = $data['obr_descripcion'];
