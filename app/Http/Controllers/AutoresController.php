@@ -27,14 +27,17 @@ class AutoresController extends BaseController
     }
 
     function allAutoresAdd(Request $request){
+        $data = $request->all();
         if ($request->hasFile('archivo')){
 
             $archivo = $request->file('archivo');
             $name = time().$archivo->getClientOriginalName();
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('autoresAvatar', $name);
 
+        }else {
+            $save_url = $data['aut_foto'];
         }
-        $data = $request->all();
+        
 
         Autores::create([
             'aut_clave' => $data['aut_clave'],
@@ -48,19 +51,33 @@ class AutoresController extends BaseController
     }
 
     function AutoresUpdate(Request $request){
-        if ($request->isJson()){
-            $data = $request->json()->all();
+        $data = $request->all();
+        if ($request->hasFile('archivo')){
+
+            $archivo = $request->file('archivo');
+            $name = time().$archivo->getClientOriginalName();
+            $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('autoresAvatar', $name);
+
+        }else {
+            $save_url = $data['aut_foto'];
+        }
+
             $artis = Autores::where('id', $data['id'])->first();
+
             if (empty($artis)){
                 return json_encode(['response' => false], 401);
             }else{
-                $artis->update($data);
+                $artis->update([
+            'aut_clave' => $data['aut_clave'],
+            'aut_nombre' => $data['aut_nombre'],
+            'aut_apellidos' => $data['aut_apellidos'],
+            'aut_foto' => $save_url,
+            'aut_templanza' => $data['aut_templanza'],
+        ]);
+
                 return response()->json(['response' => true], 200);
             }
 
-        }else{
-            return json_encode(['response' => false], 401);
-        }
     }
     function AutoresDelete(Request $request){
         if ($request->isJson()){
@@ -68,15 +85,13 @@ class AutoresController extends BaseController
 
             $id = $data['id'];
 
-            try{
-                $query = DB::table('autores')->where('id', '=', $id)->delete();
+            $query = DB::table('autores')->where('id', '=', $id)->delete();
 
-            }catch (\Exception $e){
-                report($e);
-
-                return response()->json(['exception' => true]);
-
+            if ($query == 1) {
+                return response()->json(['response' => true], 200);
             }
+
+            return response()->json(['response' => false], 401);
 
         }else{
             return json_encode(['response' => false], 401);
