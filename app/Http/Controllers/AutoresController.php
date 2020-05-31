@@ -37,10 +37,12 @@ class AutoresController extends BaseController
         }else {
             $save_url = $data['aut_foto'];
         }
+
+        $clave = time() . Str::random(8);
         
 
         Autores::create([
-            'aut_clave' => $data['aut_clave'],
+            'aut_clave' => $clave,
             'aut_nombre' => $data['aut_nombre'],
             'aut_apellidos' => $data['aut_apellidos'],
             'aut_foto' => $save_url,
@@ -68,7 +70,6 @@ class AutoresController extends BaseController
                 return json_encode(['response' => false], 401);
             }else{
                 $artis->update([
-            'aut_clave' => $data['aut_clave'],
             'aut_nombre' => $data['aut_nombre'],
             'aut_apellidos' => $data['aut_apellidos'],
             'aut_foto' => $save_url,

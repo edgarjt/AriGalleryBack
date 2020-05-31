@@ -26,7 +26,7 @@ $router->post('/ressetPass',['uses' => 'UsuariosController@ressetPass']);
 //Rutes Obras
 
 $router->get('/obras', 'ObrasController@allObras');
-$router->post('/obras', 'ObrasController@addWorks');
+$router->post('/obrasAdd', 'ObrasController@addWorks');
 $router->post('/obrasUpdate', 'ObrasController@updateWorks');
 $router->get('/obrasQR', 'ObrasController@QrWorks');
 $router->post('/obrasDelete', 'ObrasController@deleteWorks');

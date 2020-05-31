@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Esculturas;
-use http\Env\Response;
+use App\Usuarios;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use PHPQRCode\QRcode;
+use http\Env\Response;
 
 class EsculturasController extends BaseController
 {
@@ -44,6 +46,7 @@ class EsculturasController extends BaseController
     }
 
     function addEsculturas(Request $request){
+        $data = $request->all();
         if ($request->hasFile('archivo')){
 
             $archivo = $request->file('archivo');
@@ -51,19 +54,21 @@ class EsculturasController extends BaseController
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('esculturas', $name);
 
         }else{
-            return response()->json(['response' => false], 401);
+            $save_url = $data['esc_foto'];
         }
 
-        $data = $request->all();
-
-        $nombre_img = $data['esc_clave'];
+        
         //$descripcion = $data['obr_descripcion'];
-        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/esculturasQR/' . $nombre_img . '.png';
+/*        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/esculturasQR/' . $nombre_img . '.png';
         QRcode::png($nombre_img, $ruta, 'Q', '10', '1');
-        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/esculturasQR/' . $nombre_img .'.png';
+        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/esculturasQR/' . $nombre_img .'.png';*/
+
+        $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
+        $clave = time() . Str::random(8);
+
 
         Esculturas::create([
-            'esc_clave' => $data['esc_clave'],
+            'esc_clave' => $clave,
             'esc_clave_autor' => $data['esc_clave_autor'],
             'esc_nombre' => $data['esc_nombre'],
             'esc_descripcion' => $data['esc_descripcion'],
@@ -84,6 +89,8 @@ class EsculturasController extends BaseController
     }
 
     function updateEsculturas(Request $request){
+
+        $data = $request->all();
         if ($request->hasFile('archivo')){
 
             $archivo = $request->file('archivo');
@@ -91,25 +98,18 @@ class EsculturasController extends BaseController
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('esculturas', $name);
 
         }else{
-            return json_encode(['response' => false], 401);
+            $save_url = $data['esc_foto'];
         }
-
-        $data = $request->all();
 
         $id = $data['id'];
 
-        $nombre_img = $data['esc_clave'];
-        //$descripcion = $data['obr_descripcion'];
-        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/esculturasQR/' . $nombre_img . '.png';
-        QRcode::png($nombre_img, $ruta, 'Q', '10', '1');
-        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/esculturasQR/' . $nombre_img .'.png';
+        $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
 
-            DB::table('esculturas')
+            $response = DB::table('esculturas')
                 ->where('id', $id)
                 ->update([
-                    'esc_clave' => $data['esc_clave'],
-                    'esc_clave_autor' => $data['esc_clave_autor'],
                     'esc_nombre' => $data['esc_nombre'],
+                    'esc_clave_autor' => $data['esc_clave_autor'],
                     'esc_descripcion' => $data['esc_descripcion'],
                     'esc_precio' => $data['esc_precio'],
                     'esc_qr' => $QR_Rute,
@@ -118,12 +118,14 @@ class EsculturasController extends BaseController
                     'esc_alto' => $data['esc_alto'],
                     'esc_material' => $data['esc_material'],
                     'esc_estado' => $data['esc_estado'],
-                    //'esc_clave_remodelacion' => $data['esc_clave_remodelacion'],
                     'esc_foto' => $save_url
                 ]);
 
-        return response()->json(['response' => true], 200);
-       // return response()->json($data);
+        if ($response == 1) {
+            return response()->json(['response' => true]);
+        }
+
+        return response()->json(['response' => false]);
 
 
     }

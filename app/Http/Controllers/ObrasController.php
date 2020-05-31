@@ -80,16 +80,17 @@ class ObrasController extends BaseController
             $save_url = $data['obr_foto'];
         }
 
-        
-
-        $nombre_img = $data['obr_clave'];
         //$descripcion = $data['obr_descripcion'];
-        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
+/*        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
         QRcode::png($nombre_img, $ruta, 'Q', '10', '1');
         $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/obrasQR/' . $nombre_img .'.png';
+        $QR_Rute = 'hola.com';*/
+
+        $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
+        $clave = time() . Str::random(8);
 
         $create = Obras::create([
-            'obr_clave' => $data['obr_clave'],
+            'obr_clave' => $clave,
             'obr_clave_autor' => $data['obr_clave_autor'],
             'obr_nombre' => $data['obr_nombre'],
             'obr_descripcion' => $data['obr_descripcion'],
@@ -110,6 +111,7 @@ class ObrasController extends BaseController
 
 
     function updateWorks(Request $request){
+    	$data = $request->all();
 
         if ($request->hasFile('archivo')){
 
@@ -118,23 +120,22 @@ class ObrasController extends BaseController
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('avatars', $name);
 
         }else{
-            return json_encode(['response' => false], 401);
+            $save_url = $data['obr_foto'];
         }
 
-        $data = $request->all();
+        
 
         $id = $data['id'];
 
-        $nombre_img = $data['obr_clave'];
         //$descripcion = $data['obr_descripcion'];
-        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
+/*        $ruta = $_SERVER['DOCUMENT_ROOT'] . '/galeriaBack/storage/app/obrasQR/' . $nombre_img . '.png';
         QRcode::png($nombre_img, $ruta, 'Q', '10', '1');
-        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/obrasQR/' . $nombre_img .'.png';
+        $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/obrasQR/' . $nombre_img .'.png';*/
+        $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
 
-        DB::table('obras')
+        $response = DB::table('obras')
             ->where('id', $id)
             ->update([
-                'obr_clave' => $data['obr_clave'],
                 'obr_clave_autor' => $data['obr_clave_autor'],
                 'obr_nombre' => $data['obr_nombre'],
                 'obr_descripcion' => $data['obr_descripcion'],
@@ -149,8 +150,11 @@ class ObrasController extends BaseController
                 'obr_foto' => $save_url
             ]);
 
-        return response()->json(['response' => true], 200);
-        // return response()->json($data);
+        if ($response == 1) {
+            return response()->json(['response' => true]);
+        }
+
+        return response()->json(['response' => false]);
 
     }
 
