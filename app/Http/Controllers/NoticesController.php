@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Notices;
-use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Mockery\Matcher\Not;
+use http\Env\Response;
 
 class NoticesController extends BaseController
 {
@@ -33,12 +34,14 @@ class NoticesController extends BaseController
     function addNotices(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
+            $clave = time() . Str::random(10);
+
             $addNot = Notices::create([
-                'not_clave' => $data['not_clave'],
+                'not_clave' => $clave,
                 'not_nombre' => $data['not_nombre'],
                 'not_descripcion' => $data['not_descripcion']
             ]);
-            return response()->json(['response' => true], 200);
+            return $addNot;
         }else{
             return json_encode(['response' => false], 401);
         }
@@ -53,7 +56,7 @@ class NoticesController extends BaseController
                 return response()->json(['response' => false], 401);
             }else{
                 $updateNotices->update($data);
-                return response()->json(['response' => true], 200);
+                return $updateNotices;
             }
 
             return $updateNotices;

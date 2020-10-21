@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Obras;
-use function Composer\Autoload\includeFile;
 use Dotenv\Validator;
 use Faker\Provider\File;
-use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use PHPQRCode\QRcode;
 use Mpdf\Mpdf;
+use PHPQRCode\QRcode;
+use function Composer\Autoload\includeFile;
+use http\Env\Response;
 
 
 class ObrasController extends BaseController
@@ -92,6 +93,7 @@ class ObrasController extends BaseController
         $create = Obras::create([
             'obr_clave' => $clave,
             'obr_clave_autor' => $data['obr_clave_autor'],
+            'telefono' => $data['telefono'],
             'obr_nombre' => $data['obr_nombre'],
             'obr_descripcion' => $data['obr_descripcion'],
             'obr_precio' => $data['obr_precio'],
@@ -105,7 +107,7 @@ class ObrasController extends BaseController
             'obr_foto' => $save_url
         ]);
 
-        return response()->json(['response' => true], 200);
+        return $create;
 
     }
 
@@ -133,10 +135,11 @@ class ObrasController extends BaseController
         $QR_Rute = 'http://arigaleriadearte.com/galeriaBack/storage/app/obrasQR/' . $nombre_img .'.png';*/
         $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
 
-        $response = DB::table('obras')
-            ->where('id', $id)
-            ->update([
+        $response = Obras::where('id', $id)->first();
+
+            $response->update([
                 'obr_clave_autor' => $data['obr_clave_autor'],
+                'telefono' => $data['telefono'],
                 'obr_nombre' => $data['obr_nombre'],
                 'obr_descripcion' => $data['obr_descripcion'],
                 'obr_precio' => $data['obr_precio'],
@@ -150,11 +153,7 @@ class ObrasController extends BaseController
                 'obr_foto' => $save_url
             ]);
 
-        if ($response == 1) {
-            return response()->json(['response' => true]);
-        }
-
-        return response()->json(['response' => false]);
+            return $response;
 
     }
 

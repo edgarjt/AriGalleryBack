@@ -50,7 +50,11 @@ $router->post('/noticiaUpdate', 'NoticesController@updateNotices');
 $router->post('/noticiaDelete', 'NoticesController@DeleteNotices');
 
 //rutes Events
-$router->get('/ultimoseventos', 'EventosController@ultimateEvents');
+$router->get('/allEventos', 'EventosController@allEvents');
+$router->get('/eventos', 'EventosController@ultimateEvents');
+$router->get('/platicas', 'EventosController@ultimatePlaticas');
+$router->get('/talleres', 'EventosController@ultimateTalleres');
+$router->get('/expociciones', 'EventosController@ultimateExpociciones');
 $router->post('/addEventos', 'EventosController@addEvents');
 $router->post('/updateEventos', 'EventosController@updateEvents');
 $router->post('/deleteEventos', 'EventosController@deleteEvents');

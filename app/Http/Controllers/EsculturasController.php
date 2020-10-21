@@ -67,9 +67,10 @@ class EsculturasController extends BaseController
         $clave = time() . Str::random(8);
 
 
-        Esculturas::create([
+        $response = Esculturas::create([
             'esc_clave' => $clave,
             'esc_clave_autor' => $data['esc_clave_autor'],
+            'telefono' => $data['telefono'],
             'esc_nombre' => $data['esc_nombre'],
             'esc_descripcion' => $data['esc_descripcion'],
             'esc_precio' => $data['esc_precio'],
@@ -83,7 +84,7 @@ class EsculturasController extends BaseController
             'esc_foto' => $save_url
         ]);
 
-        return response()->json(['response' => true], 200);
+        return $response;
 
 
     }
@@ -105,12 +106,13 @@ class EsculturasController extends BaseController
 
         $QR_Rute = 'https://cdn.imgbin.com/24/12/23/imgbin-qr-code-barcode-scanners-scanner-scan-MmWAmjFyg69G9efg3dESL2TZF.jpg';
 
-            $response = DB::table('esculturas')
-                ->where('id', $id)
-                ->update([
+            $response = Esculturas::where('id', $id)->first();
+
+                $response->update([
                     'esc_nombre' => $data['esc_nombre'],
                     'esc_clave_autor' => $data['esc_clave_autor'],
                     'esc_descripcion' => $data['esc_descripcion'],
+                    'telefono' => $data['telefono'],
                     'esc_precio' => $data['esc_precio'],
                     'esc_qr' => $QR_Rute,
                     'esc_anio' => $data['esc_anio'],
@@ -121,11 +123,9 @@ class EsculturasController extends BaseController
                     'esc_foto' => $save_url
                 ]);
 
-        if ($response == 1) {
-            return response()->json(['response' => true]);
-        }
+                return $response;
 
-        return response()->json(['response' => false]);
+
 
 
     }

@@ -46,24 +46,22 @@ class UsuariosController extends BaseController
     }
     function login(Request $request){
         if($request->isJson()){
-            try{
-                $data = $request->json()->all();
-                $user = Usuarios::where('usu_telefono', $data['usu_telefono'])->first();
+            $data = $request->json()->all();
+            $user = Usuarios::where('usu_email', $data['usu_email'])->first();
 
-                if ($user && Hash::check($data['usu_pass'], $user->usu_pass)){
-                    return response()->json($user, 200);
-                }else{
-                    return json_encode(['response' => false], 401);
-                }
+            if ($user == null) {
+            	return response()->json(['response' => 'email']);
+            	
+            }else if (Hash::check($data['usu_pass'], $user->usu_pass)){
+                return response()->json(['response' => $user], 200);
 
-                //return $user;
+            }else{
+                return json_encode(['response' => 'password'], 401);
 
-            }catch (ModelNotFoundException $e){
-                return json_encode(['response' => false], 401);
             }
-        }else{
-            return json_encode(['response' => false], 401);
         }
+            return json_encode(['response' => 'No autorizado'], 401);
+
     }
     function update(Request $request){
 
@@ -83,7 +81,8 @@ class UsuariosController extends BaseController
                     'usu_apmaterno' => $data['usu_apmaterno'],
                     'usu_tipo' => $data['usu_tipo']
                 ]);
-                return response()->json(['response' => true], 200);
+                /*return response()->json(['response' => true], 200);*/
+                return $user_update;
             }
         }else{
             return json_encode(['response' => false], 401);

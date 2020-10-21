@@ -41,14 +41,15 @@ class AutoresController extends BaseController
         $clave = time() . Str::random(8);
         
 
-        Autores::create([
+        $responseB = Autores::create([
             'aut_clave' => $clave,
             'aut_nombre' => $data['aut_nombre'],
             'aut_apellidos' => $data['aut_apellidos'],
             'aut_foto' => $save_url,
             'aut_templanza' => $data['aut_templanza'],
         ]);
-        return response()->json(['response' => true], 200);
+        /*return response()->json(['response' => true], 200);*/
+        return $responseB;
 
     }
 
@@ -74,9 +75,10 @@ class AutoresController extends BaseController
             'aut_apellidos' => $data['aut_apellidos'],
             'aut_foto' => $save_url,
             'aut_templanza' => $data['aut_templanza'],
+            'aut_estado' => $data['aut_estado'],
         ]);
 
-                return response()->json(['response' => true], 200);
+                return $artis;
             }
 
     }
@@ -92,7 +94,7 @@ class AutoresController extends BaseController
                 return response()->json(['response' => true], 200);
             }
 
-            return response()->json(['response' => false], 401);
+            return json_encode(['response' => false], 401);
 
         }else{
             return json_encode(['response' => false], 401);

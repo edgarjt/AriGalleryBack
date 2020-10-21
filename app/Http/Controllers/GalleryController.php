@@ -24,15 +24,16 @@ class GalleryController extends Controller
     }
 
     function GalleryAdd(Request $request){
+        $data = $request->all();
         if ($request->hasFile('archivo')){
 
             $archivo = $request->file('archivo');
             $name = time().$archivo->getClientOriginalName();
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('galleryV', $name);
 
+        }else {
+            $save_url = $data['gal_foto'];
         }
-
-        $data = $request->all();
 
         $create = Gallery::create([
             'gal_titulo' => $data['gal_titulo'],
@@ -40,10 +41,11 @@ class GalleryController extends Controller
             'gal_descripcion' => $data['gal_descripcion'],
         ]);
 
-        return response()->json(['response' => true], 200);
+        return $create;
     }
 
     function GalleryUpdate(Request $request){
+        $data = $request->all();
         if ($request->hasFile('gal_foto')){
 
             $archivo = $request->file('gal_foto');
@@ -51,19 +53,19 @@ class GalleryController extends Controller
             $save_url = 'http://'.$_SERVER['SERVER_NAME'].'/galeriaBack/storage/app/'.$archivo->storeAs('galleryV', $name);
 
         }else{
-            return json_encode(['response' => false], 401);
+            $save_url = $data['gal_foto'];
         }
-        $id = $request['id'];
 
-        DB::table('galeriav')
-            ->where('id', $id)
-            ->update([
+        $id = $data['id'];
+
+        $response = Gallery::where('id', $id)->first();
+            $response->update([
                 'gal_titulo' => $request['gal_titulo'],
                 'gal_foto' => $save_url,
                 'gal_descripcion' => $request['gal_descripcion']
 
             ]);
-        return response()->json(['response' => true], 200);
+        return $response;
 
 
     }

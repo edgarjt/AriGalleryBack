@@ -9,11 +9,46 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class EventosController extends BaseController
 {
     function ultimateEvents(Request $request){
-        if ($request->isJson()){
-            $data = Eventos::orderBy('id', 'desc')->get();
-            return response()->json($data, 200);
-        }else{
-            return response()->json(['response' => false], 401);
+
+        if ($request->isJson()) {
+            $response = Eventos::orderBy('id', 'desc')->where('eve_tipo', 0)->get();
+            return $response;
+        }
+
+    }
+
+        function ultimatePlaticas(Request $request){
+
+        if ($request->isJson()) {
+            $response = Eventos::orderBy('id', 'desc')->where('eve_tipo', 1)->get();
+            return $response;
+        }
+
+    }
+
+        function ultimateTalleres(Request $request){
+
+        if ($request->isJson()) {
+            $response = Eventos::orderBy('id', 'desc')->where('eve_tipo', 2)->get();
+            return $response;
+        }
+
+    }
+
+        function ultimateExpociciones(Request $request){
+
+        if ($request->isJson()) {
+            $response = Eventos::orderBy('id', 'desc')->where('eve_tipo', 3)->get();
+            return $response;
+        }
+
+    }
+
+        function allEvents(Request $request){
+
+        if ($request->isJson()) {
+            $response = Eventos::all();
+            return $response;
         }
 
     }
@@ -21,13 +56,14 @@ class EventosController extends BaseController
     function addEvents(Request $request){
         if ($request->isJson()){
             $data = $request->json()->all();
-            Eventos::create([
+            $reponse = Eventos::create([
                 'eve_nombre' => $data['eve_nombre'],
+                'eve_tipo' => $data['eve_tipo'],
                 'eve_descripcion' => $data['eve_descripcion'],
                 'eve_fecha' => $data['eve_fecha'],
                 'eve_horario' => $data['eve_horario'],
             ]);
-            return response()->json(['response' => true], 200);
+            return $reponse;
         }else{
             return json_encode(['response' => false], 401);
         }
@@ -42,7 +78,7 @@ class EventosController extends BaseController
                 return json_encode(['response' => false], 401);
             }else{
                 $update_event->update($data);
-                return response()->json(['response' => true], 200);
+                return $update_event;
             }
         }
     }

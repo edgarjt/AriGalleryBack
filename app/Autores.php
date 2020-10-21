@@ -10,7 +10,7 @@ class Autores extends Model
     protected $table = 'autores';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['aut_clave', 'aut_nombre', 'aut_apellidos', 'aut_foto', 'aut_templanza'];
+    protected $fillable = ['aut_clave', 'aut_estado', 'aut_nombre', 'aut_apellidos', 'aut_foto', 'aut_templanza'];
     //protected $hidden = ['name'];
 
 }
